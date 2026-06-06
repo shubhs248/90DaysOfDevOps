@@ -1,0 +1,2 @@
+103.197.74.44 - - [06/Jun/2026:19:02:08 +0000] "GET / HTTP/1.1" 200 409 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0"
+103.197.74.44 - - [06/Jun/2026:19:02:08 +0000] "GET /favicon.ico HTTP/1.1" 404 134 "http://34.215.81.59/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0"
