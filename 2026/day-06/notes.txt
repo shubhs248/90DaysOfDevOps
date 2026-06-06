@@ -1,0 +1,4 @@
+This is how you push a single string to file
+This should append to the next line
+will later use it to practice display single line through other commands
+using tee command to push it altogether
