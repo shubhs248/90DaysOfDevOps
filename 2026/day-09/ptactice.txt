@@ -1,0 +1,152 @@
+ubuntu@ip-172-31-35-116:~$ whoami
+ubuntu
+ubuntu@ip-172-31-35-116:~$ sudo useradd -m tokyo
+ubuntu@ip-172-31-35-116:~$ sudo useradd -m berlin
+ubuntu@ip-172-31-35-116:~$ sudo useradd -m professor
+ubuntu@ip-172-31-35-116:~$ sudo passwd tokyo
+New password:
+Retype new password:
+passwd: password updated successfully
+ubuntu@ip-172-31-35-116:~$ sudo passwd berlin
+New password:
+Retype new password:
+passwd: password updated successfully
+ubuntu@ip-172-31-35-116:~$ sudo passwd professor
+New password:
+Retype new password:
+passwd: password updated successfully
+ubuntu@ip-172-31-35-116:~$ grep -E tokyo|berlin|profession /etc/passwd
+profession: command not found
+berlin: command not found
+^C
+ubuntu@ip-172-31-35-116:~$ grep -E "tokyo|berlin|profession" /etc/passwd
+tokyo:x:1001:1001::/home/tokyo:/bin/sh
+berlin:x:1002:1002::/home/berlin:/bin/sh
+ubuntu@ip-172-31-35-116:~$ grep -E "tokyo|berlin|professor" /etc/passwd
+tokyo:x:1001:1001::/home/tokyo:/bin/sh
+berlin:x:1002:1002::/home/berlin:/bin/sh
+professor:x:1003:1003::/home/professor:/bin/sh
+ubuntu@ip-172-31-35-116:~$ ls -l /home
+total 16
+drwxr-x--- 2 berlin    berlin    4096 Jun  7 08:37 berlin
+drwxr-x--- 2 professor professor 4096 Jun  7 08:37 professor
+drwxr-x--- 2 tokyo     tokyo     4096 Jun  7 08:36 tokyo
+drwxr-x--- 4 ubuntu    ubuntu    4096 Jun  6 19:15 ubuntu
+ubuntu@ip-172-31-35-116:~$ id tokyo
+uid=1001(tokyo) gid=1001(tokyo) groups=1001(tokyo)
+ubuntu@ip-172-31-35-116:~$ sudo groupadd developers
+ubuntu@ip-172-31-35-116:~$ sudo groupadd admins
+ubuntu@ip-172-31-35-116:~$ grep -E "developers|admins" /etc/groups
+grep: /etc/groups: No such file or directory
+ubuntu@ip-172-31-35-116:~$ grep -E "developers|admins" /etc/group
+developers:x:1004:
+admins:x:1005:
+ubuntu@ip-172-31-35-116:~$ getent group developers
+developers:x:1004:
+ubuntu@ip-172-31-35-116:~$ getent group admins
+admins:x:1005:
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG developers tokyo
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG developers, admins berlin
+usermod: group '' does not exist
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG developers,admins berlin
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG admins professor
+ubuntu@ip-172-31-35-116:~$ id tokyo
+uid=1001(tokyo) gid=1001(tokyo) groups=1001(tokyo),1004(developers)
+ubuntu@ip-172-31-35-116:~$ group tokyo
+Command 'group' not found, did you mean:
+  command 'groups' from deb coreutils-from-gnu (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-uutils (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-busybox (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-toybox (0.0.0~ubuntu25)
+Try: sudo apt install <deb name>
+ubuntu@ip-172-31-35-116:~$ groups tokyo
+tokyo : tokyo developers
+ubuntu@ip-172-31-35-116:~$ id berlin
+uid=1002(berlin) gid=1002(berlin) groups=1002(berlin),1004(developers),1005(admins)
+ubuntu@ip-172-31-35-116:~$ groups berlin
+berlin : berlin developers admins
+ubuntu@ip-172-31-35-116:~$
+ubuntu@ip-172-31-35-116:~$ id professor
+uid=1003(professor) gid=1003(professor) groups=1003(professor),1005(admins)
+ubuntu@ip-172-31-35-116:~$ groups professor
+professor : professor admins
+ubuntu@ip-172-31-35-116:~$ sudo mkdir -p /opt/dev-project
+ubuntu@ip-172-31-35-116:~$ ls -la /opt/dev-project/
+total 8
+drwxr-xr-x 2 root root 4096 Jun  7 08:49 .
+drwxr-xr-x 3 root root 4096 Jun  7 08:49 ..
+ubuntu@ip-172-31-35-116:~$ sudo chgrp developers /opt/dev-project/
+ubuntu@ip-172-31-35-116:~$ sudo chmod 775 /opt/dev-project/
+ubuntu@ip-172-31-35-116:~$
+ubuntu@ip-172-31-35-116:~$ ls -la /opt/dev-project/
+total 8
+drwxrwxr-x 2 root developers 4096 Jun  7 08:49 .
+drwxr-xr-x 3 root root       4096 Jun  7 08:49 ..
+ubuntu@ip-172-31-35-116:~$ sudo -u tokyo touch /opt/dev-project/tokyo.txt
+ubuntu@ip-172-31-35-116:~$ sudo -u berlin touch /opt/dev-project/berlin.txt
+ubuntu@ip-172-31-35-116:~$ ls -la /opt/dev-project/
+total 8
+drwxrwxr-x 2 root   developers 4096 Jun  7 08:55 .
+drwxr-xr-x 3 root   root       4096 Jun  7 08:49 ..
+-rw-r--r-- 1 berlin berlin        0 Jun  7 08:55 berlin.txt
+-rw-r--r-- 1 tokyo  tokyo         0 Jun  7 08:55 tokyo.txt
+ubuntu@ip-172-31-35-116:~$ stat /opt/dev-project
+  File: /opt/dev-project
+  size: 4096            Blocks: 8          IO Block: 4096   directory
+Device: 202,1   Inode: 290748      Links: 2
+Access: (0775/drwxrwxr-x)  Uid: (    0/    root)   Gid: ( 1004/developers)
+Access: 2026-06-07 08:55:31.473273707 +0000
+Modify: 2026-06-07 08:55:20.161178027 +0000
+Change: 2026-06-07 08:55:20.161178027 +0000
+ Birth: 2026-06-07 08:49:37.709281900 +0000
+ubuntu@ip-172-31-35-116:~$  sudo useradd -m nairobi
+ubuntu@ip-172-31-35-116:~$ sudo passwd nairobi
+New password:
+Retype new password:
+passwd: password updated successfully
+ubuntu@ip-172-31-35-116:~$ sudo groupadd project-team
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG project-team nairobi
+ubuntu@ip-172-31-35-116:~$ sudo usermod -aG project-team tokyo
+ubuntu@ip-172-31-35-116:~$ group nairobi
+Command 'group' not found, did you mean:
+  command 'groups' from deb coreutils-from-gnu (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-uutils (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-busybox (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-toybox (0.0.0~ubuntu25)
+Try: sudo apt install <deb name>
+ubuntu@ip-172-31-35-116:~$ groups nairobi
+nairobi : nairobi project-team
+ubuntu@ip-172-31-35-116:~$ groups tokyo
+tokyo : tokyo developers project-team
+ubuntu@ip-172-31-35-116:~$ mkdir -p /opt/team-workspace
+mkdir: Permission denied
+ubuntu@ip-172-31-35-116:~$ sudo chgrp project-team /opt/team-workspace
+chgrp: cannot dereference '/opt/team-workspace': No such file or directory
+ubuntu@ip-172-31-35-116:~$ sudo mkdir -p /opt/team-workspace
+ubuntu@ip-172-31-35-116:~$ sudo chgrp project-team /opt/team-workspace
+ubuntu@ip-172-31-35-116:~$ groups project-team
+groups: 'project-team': no such user
+ubuntu@ip-172-31-35-116:~$ group project-team
+Command 'group' not found, did you mean:
+  command 'groups' from deb coreutils-from-gnu (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-uutils (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-busybox (0.0.0~ubuntu25)
+  command 'groups' from deb coreutils-from-toybox (0.0.0~ubuntu25)
+Try: sudo apt install <deb name>
+ubuntu@ip-172-31-35-116:~$ sudo chmod 775 /opt/team-workspace/
+ubuntu@ip-172-31-35-116:~$ ls -ld /opt/team-workspace/
+drwxrwxr-x 2 root project-team 4096 Jun  7 09:12 /opt/team-workspace/
+ubuntu@ip-172-31-35-116:~$ sudo -u nairobi touch /opt/team-workspace/nairobi.txt
+ubuntu@ip-172-31-35-116:~$ ls -la /opt/team-workspace/
+total 8
+drwxrwxr-x 2 root    project-team 4096 Jun  7 09:14 .
+drwxr-xr-x 4 root    root         4096 Jun  7 09:12 ..
+-rw-r--r-- 1 nairobi nairobi         0 Jun  7 09:14 nairobi.txt
+ubuntu@ip-172-31-35-116:~$ sudo -u tokyo touch /opt/team-workspace/tokyo.txt
+ubuntu@ip-172-31-35-116:~$ ls -la /opt/team-workspace/
+total 8
+drwxrwxr-x 2 root    project-team 4096 Jun  7 09:15 .
+drwxr-xr-x 4 root    root         4096 Jun  7 09:12 ..
+-rw-r--r-- 1 nairobi nairobi         0 Jun  7 09:14 nairobi.txt
+-rw-r--r-- 1 tokyo   tokyo           0 Jun  7 09:15 tokyo.txt
+ubuntu@ip-172-31-35-116:~$
