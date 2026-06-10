@@ -1,0 +1,416 @@
+ubuntu@ip-172-31-5-116:~$ ps aux --sort=-%cpu| head 1-
+head: cannot open '1-' for reading: No such file or directory
+ubuntu@ip-172-31-5-116:~$ ps aux --sort=-%cpu| head 10
+head: cannot open '10' for reading: No such file or directory
+ubuntu@ip-172-31-5-116:~$ ps aux --sort=-%cpu| head -10
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  1.6  1.5  24680 15388 ?        Ss   15:58   0:03 /sbin/init
+ubuntu       968  0.3  1.3  21784 12836 ?        Ss   16:01   0:00 /usr/lib/systemd/systemd --user
+ubuntu      1082  0.2  0.8  18416  7904 ?        S    16:01   0:00 sshd-session: ubuntu@pts/0
+root         605  0.2  3.9 1811304 38812 ?       Ssl  15:58   0:00 /usr/lib/snapd/snapd
+root         191  0.1  1.5  39892 14672 ?        Ss   15:58   0:00 /usr/lib/systemd/systemd-udevd
+root         128  0.1  1.5  42176 15360 ?        S<s  15:58   0:00 /usr/lib/systemd/systemd-journald
+ubuntu      1083  0.1  0.5   9280  5548 pts/0    Ss   16:01   0:00 -bash
+root         922  0.0  2.1 1685292 21104 ?       Ssl  15:58   0:00 /snap/amazon-ssm-agent/13009/amazon-ssm-agent
+root         597  0.0  3.0  46808 29728 ?        Ss   15:58   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+ubuntu@ip-172-31-5-116:~$ sudo systemctl status nginx
+Unit nginx.service could not be found.
+ubuntu@ip-172-31-5-116:~$ sudo systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disabled; preset: enabled)
+    Drop-In: /usr/lib/systemd/system/ssh.service.d
+             └─ec2-instance-connect.conf
+     Active: active (running) since Wed 2026-06-10 15:58:39 UTC; 3min 37s ago
+ Invocation: b4f5124777924333ae9b69883292c3de
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 758 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 785 (sshd)
+      Tasks: 1 (limit: 657)
+     Memory: 6.9M (peak: 8M)
+        CPU: 65ms
+     CGroup: /system.slice/ssh.service
+             └─785 "sshd: /usr/sbin/sshd -D -o AuthorizedKeysCommand /usr/share/ec2-instance-connect/eic_run_authorized_keys %u %f -o AuthorizedKeysCommandUser ec2-instance-connect [listener] 0 of 10-100 start>
+
+Jun 10 15:58:38 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on 0.0.0.0 port 22.
+Jun 10 15:58:39 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on :: port 22.
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: Accepted publickey for ubuntu from 103.197.74.235 port 25544 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+ubuntu@ip-172-31-5-116:~$ journalctl -u nginx -n 50
+-- No entries --
+ubuntu@ip-172-31-5-116:~$ journalctl -u ssh -n 50
+Jun 08 15:23:26 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 08 15:23:27 ip-172-31-5-116 sshd[982]: Server listening on 0.0.0.0 port 22.
+Jun 08 15:23:27 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 08 15:23:27 ip-172-31-5-116 sshd[982]: Server listening on :: port 22.
+Jun 08 15:58:13 ip-172-31-5-116 sshd-session[1222]: Accepted publickey for ubuntu from 103.197.74.44 port 41735 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 08 15:58:13 ip-172-31-5-116 sshd-session[1222]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+Jun 08 16:25:28 ip-172-31-5-116 sshd-session[1856]: Unable to negotiate with 198.235.24.40 port 61582: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha256,diffie-hellman-gr>
+Jun 08 17:23:28 ip-172-31-5-116 sshd[982]: Received signal 15; terminating.
+Jun 08 17:23:28 ip-172-31-5-116 systemd[1]: Stopping ssh.service - OpenBSD Secure Shell server...
+Jun 08 17:23:29 ip-172-31-5-116 systemd[1]: ssh.service: Deactivated successfully.
+Jun 08 17:23:29 ip-172-31-5-116 systemd[1]: Stopped ssh.service - OpenBSD Secure Shell server.
+-- Boot 72fab1154e7349a0ae024b52a3419361 --
+Jun 09 16:25:57 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 09 16:25:58 ip-172-31-5-116 sshd[713]: Server listening on 0.0.0.0 port 22.
+Jun 09 16:25:58 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 09 16:25:58 ip-172-31-5-116 sshd[713]: Server listening on :: port 22.
+Jun 09 16:28:52 ip-172-31-5-116 sshd-session[999]: Accepted publickey for ubuntu from 103.197.74.235 port 30656 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 09 16:28:52 ip-172-31-5-116 sshd-session[999]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+Jun 09 17:57:21 ip-172-31-5-116 sshd[713]: Received signal 15; terminating.
+Jun 09 17:57:21 ip-172-31-5-116 systemd[1]: Stopping ssh.service - OpenBSD Secure Shell server...
+Jun 09 17:57:22 ip-172-31-5-116 systemd[1]: ssh.service: Deactivated successfully.
+Jun 09 17:57:22 ip-172-31-5-116 systemd[1]: Stopped ssh.service - OpenBSD Secure Shell server.
+-- Boot 47fe479531a94b17b9d83666e28bc6d2 --
+Jun 10 15:58:38 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on 0.0.0.0 port 22.
+Jun 10 15:58:39 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on :: port 22.
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: Accepted publickey for ubuntu from 103.197.74.235 port 25544 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+...skipping...
+Jun 08 15:23:26 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 08 15:23:27 ip-172-31-5-116 sshd[982]: Server listening on 0.0.0.0 port 22.
+Jun 08 15:23:27 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 08 15:23:27 ip-172-31-5-116 sshd[982]: Server listening on :: port 22.
+Jun 08 15:58:13 ip-172-31-5-116 sshd-session[1222]: Accepted publickey for ubuntu from 103.197.74.44 port 41735 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 08 15:58:13 ip-172-31-5-116 sshd-session[1222]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+Jun 08 16:25:28 ip-172-31-5-116 sshd-session[1856]: Unable to negotiate with 198.235.24.40 port 61582: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha256,diffie-hellman-gr>
+Jun 08 17:23:28 ip-172-31-5-116 sshd[982]: Received signal 15; terminating.
+Jun 08 17:23:28 ip-172-31-5-116 systemd[1]: Stopping ssh.service - OpenBSD Secure Shell server...
+Jun 08 17:23:29 ip-172-31-5-116 systemd[1]: ssh.service: Deactivated successfully.
+Jun 08 17:23:29 ip-172-31-5-116 systemd[1]: Stopped ssh.service - OpenBSD Secure Shell server.
+-- Boot 72fab1154e7349a0ae024b52a3419361 --
+Jun 09 16:25:57 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 09 16:25:58 ip-172-31-5-116 sshd[713]: Server listening on 0.0.0.0 port 22.
+Jun 09 16:25:58 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 09 16:25:58 ip-172-31-5-116 sshd[713]: Server listening on :: port 22.
+Jun 09 16:28:52 ip-172-31-5-116 sshd-session[999]: Accepted publickey for ubuntu from 103.197.74.235 port 30656 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 09 16:28:52 ip-172-31-5-116 sshd-session[999]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+Jun 09 17:57:21 ip-172-31-5-116 sshd[713]: Received signal 15; terminating.
+Jun 09 17:57:21 ip-172-31-5-116 systemd[1]: Stopping ssh.service - OpenBSD Secure Shell server...
+Jun 09 17:57:22 ip-172-31-5-116 systemd[1]: ssh.service: Deactivated successfully.
+Jun 09 17:57:22 ip-172-31-5-116 systemd[1]: Stopped ssh.service - OpenBSD Secure Shell server.
+-- Boot 47fe479531a94b17b9d83666e28bc6d2 --
+Jun 10 15:58:38 ip-172-31-5-116 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on 0.0.0.0 port 22.
+Jun 10 15:58:39 ip-172-31-5-116 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+Jun 10 15:58:39 ip-172-31-5-116 sshd[785]: Server listening on :: port 22.
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: Accepted publickey for ubuntu from 103.197.74.235 port 25544 ssh2: RSA SHA256:yajSTEjFdZMYcSxsA4LyBRJsTw+S72/eldyB26VEH2M
+Jun 10 16:01:12 ip-172-31-5-116 sshd-session[963]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+
+ubuntu@ip-172-31-5-116:~$ echo "Day 12 revision" >> revision.txt
+ubuntu@ip-172-31-5-116:~$ ls -l revision.txt
+-rw-rw-r-- 1 ubuntu ubuntu 16 Jun 10 16:03 revision.txt
+ubuntu@ip-172-31-5-116:~$ sudo chown tokyo revision.txt
+ubuntu@ip-172-31-5-116:~$ ls -l revision.txt
+-rw-rw-r-- 1 tokyo ubuntu 16 Jun 10 16:03 revision.txt
+ubuntu@ip-172-31-5-116:~$ id tokyo
+uid=1001(tokyo) gid=1001(tokyo) groups=1001(tokyo),1000(ubuntu),1002(devs)
+ubuntu@ip-172-31-5-116:~$ find . -user tokyo
+./day-11/team-notes.txt
+./day-11/bank-heist/access-codes.txt
+./day-11/app-logs
+./revision.txt
+ubuntu@ip-172-31-5-116:~$ find . -user professor
+./day-11/heist-project
+./day-11/heist-project/vault
+./day-11/heist-project/vault/gold.txt
+./day-11/heist-project/plans
+./day-11/heist-project/plans/strategy.conf
+ubuntu@ip-172-31-5-116:~$ mkdir revision
+ubuntu@ip-172-31-5-116:~$ mv revision.txt revision
+ubuntu@ip-172-31-5-116:~$ tree revision
+revision
+└── revision.txt
+
+1 directory, 1 file
+ubuntu@ip-172-31-5-116:~$ cat /revision/revision.txt
+cat: /revision/revision.txt: No such file or directory
+ubuntu@ip-172-31-5-116:~$ ls -l
+total 16
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 16:38 day-10
+drwxrwxr-x 5 ubuntu ubuntu 4096 Jun  9 16:42 day-11
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jun 10 16:05 revision
+drwx------ 3 ubuntu ubuntu 4096 Jun  9 16:39 snap
+ubuntu@ip-172-31-5-116:~$ cat revision/revision.txt
+Day 12 revision
+ubuntu@ip-172-31-5-116:~$ echo "Practice chal rahi hai Dosto" >> revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ cat revision/revision.txt
+Day 12 revision
+Practice chal rahi hai Dosto
+ubuntu@ip-172-31-5-116:~$ ls -l revision/revision.txt
+-rw-rw-r-- 1 tokyo ubuntu 45 Jun 10 16:06 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ sudo chmod u+x revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ ls -l revision/revision.txt
+-rwxrw-r-- 1 tokyo ubuntu 45 Jun 10 16:06 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ sudo chmod 755 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ ls -l revision/revision.txt
+-rwxr-xr-x 1 tokyo ubuntu 45 Jun 10 16:06 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ sudo chmod 600 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ ls -l revision/revision.txt
+-rw------- 1 tokyo ubuntu 45 Jun 10 16:06 revision/revision.txt
+ubuntu@ip-172-31-5-116:~$ sudo apt up
+Error: Invalid operation up
+ubuntu@ip-172-31-5-116:~$ sudo apt update
+Hit:1 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute InRelease
+Get:2 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates InRelease [137 kB]
+Hit:3 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-backports InRelease
+Get:4 http://security.ubuntu.com/ubuntu resolute-security InRelease [137 kB]
+Get:5 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 Packages [211 kB]
+Get:6 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main Translation-en [56.9 kB]
+Get:7 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64 Components [37.1 kB]
+Get:8 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64 c-n-f Metadata [3468 B]
+Get:9 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 Packages [113 kB]
+Get:10 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe Translation-en [35.4 kB]
+Get:11 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Components [54.7 kB]
+Get:12 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 c-n-f Metadata [2988 B]
+Get:13 http://security.ubuntu.com/ubuntu resolute-security/main amd64v3 Packages [203 kB]
+Get:14 http://security.ubuntu.com/ubuntu resolute-security/main Translation-en [54.5 kB]
+Get:15 http://security.ubuntu.com/ubuntu resolute-security/main amd64 Components [31.1 kB]
+Get:16 http://security.ubuntu.com/ubuntu resolute-security/main amd64 c-n-f Metadata [3332 B]
+Get:17 http://security.ubuntu.com/ubuntu resolute-security/universe amd64v3 Packages [107 kB]
+Get:18 http://security.ubuntu.com/ubuntu resolute-security/universe Translation-en [33.1 kB]
+Get:19 http://security.ubuntu.com/ubuntu resolute-security/universe amd64 Components [42.7 kB]
+Get:20 http://security.ubuntu.com/ubuntu resolute-security/universe amd64 c-n-f Metadata [2860 B]
+Fetched 1267 kB in 1s (2410 kB/s)
+47 packages can be upgraded. Run 'apt list --upgradable' to see them.
+ubuntu@ip-172-31-5-116:~$ sudo apt install nginx
+Installing:
+  nginx
+
+Installing dependencies:
+  nginx-common
+
+Suggested packages:
+  fcgiwrap  nginx-doc  ssl-cert
+
+Summary:
+  Upgrading: 0, Installing: 2, Removing: 0, Not Upgrading: 47
+  Download size: 663 kB
+  Space needed: 1874 kB / 27.3 GB available
+
+Continue? [Y/n] y
+Get:1 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 nginx-common all 1.28.3-2ubuntu1.4 [37.1 kB]
+Get:2 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 nginx amd64 1.28.3-2ubuntu1.4 [626 kB]
+Fetched 663 kB in 0s (15.8 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package nginx-common.
+(Reading database ... 85301 files and directories currently installed.)
+Preparing to unpack .../nginx-common_1.28.3-2ubuntu1.4_all.deb ...
+Unpacking nginx-common (1.28.3-2ubuntu1.4) ...
+Selecting previously unselected package nginx.
+Preparing to unpack .../nginx_1.28.3-2ubuntu1.4_amd64v3.deb ...
+Unpacking nginx (1.28.3-2ubuntu1.4) ...
+Setting up nginx-common (1.28.3-2ubuntu1.4) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/nginx.service' → '/usr/lib/systemd/system/nginx.service'.
+Setting up nginx (1.28.3-2ubuntu1.4) ...
+ * Upgrading binary nginx                                                                                                                                                                                  [ OK ]
+Processing triggers for man-db (2.13.1-1build1) ...
+Processing triggers for ufw (0.36.2-9build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-5-116:~$ systemctl is-enabled nginx
+enabled
+ubuntu@ip-172-31-5-116:~$ sudo -tulnp| grep 80
+invalid option provided
+usage: sudo -h | -K | -k | -V
+usage: sudo [-ABbknS] [-p prompt] [-D directory] [-g group] [-u user] [-i | -s] [command [arg ...]]
+usage: sudo -v [-ABknS] [-p prompt] [-g group] [-u user]
+usage: sudo -l [-ABknS] [-p prompt] [-U user] [-g group] [-u user] [command [arg ...]]
+usage: sudo -e [-ABknS] [-p prompt] [-D directory] [-g group] [-u user] file ...
+ubuntu@ip-172-31-5-116:~$ sudo ss -tulnp | grep 80
+tcp   LISTEN 0      511              0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=3136,fd=5),("nginx",pid=3135,fd=5))
+tcp   LISTEN 0      511                 [::]:80           [::]:*    users:(("nginx",pid=3136,fd=6),("nginx",pid=3135,fd=6))
+ubuntu@ip-172-31-5-116:~$ sudo ss -tulnp | grep nginx
+tcp   LISTEN 0      511              0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=3136,fd=5),("nginx",pid=3135,fd=5))
+tcp   LISTEN 0      511                 [::]:80           [::]:*    users:(("nginx",pid=3136,fd=6),("nginx",pid=3135,fd=6))
+ubuntu@ip-172-31-5-116:~$ systemctl list-units --type=service
+  UNIT                                           LOAD   ACTIVE     SUB     JOB   DESCRIPTION
+  acpid.service                                  loaded active     running       ACPI event daemon
+  apparmor.service                               loaded active     exited        Load AppArmor profiles
+  apport.service                                 loaded active     exited        automatic crash report generation
+● apt-daily-upgrade.service                      loaded activating start   start Daily apt upgrade and clean activities
+  blk-availability.service                       loaded active     exited        Availability of block devices
+  chrony.service                                 loaded active     running       chrony, an NTP client/server
+  cloud-config.service                           loaded active     exited        Cloud-init: Config Stage
+  cloud-final.service                            loaded active     exited        Cloud-init: Final Stage
+  cloud-init-local.service                       loaded active     exited        Cloud-init: Local Stage (pre-network)
+  cloud-init-network.service                     loaded active     exited        Cloud-init: Network Stage
+  console-setup.service                          loaded active     exited        Set console font and keymap
+  cron.service                                   loaded active     running       Regular background program processing daemon
+  dbus.service                                   loaded active     running       D-Bus System Message Bus
+  dracut-shutdown.service                        loaded active     exited        Restore /run/initramfs on shutdown
+  finalrd.service                                loaded active     exited        Create final runtime dir for shutdown pivot root
+  getty@tty1.service                             loaded active     running       Getty on tty1
+  keyboard-setup.service                         loaded active     exited        Set the console keyboard layout
+  kmod-static-nodes.service                      loaded active     exited        Create List of Static Device Nodes
+  lvm2-monitor.service                           loaded active     exited        Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling
+  ModemManager.service                           loaded active     running       Modem Manager
+  multipathd-queueing.service                    loaded active     exited        Enable queuing for multipath maps
+  multipathd.service                             loaded active     running       Device-Mapper Multipath Device Controller
+  netplan-configure.service                      loaded active     exited        Netplan Backend Configuration
+  networkd-dispatcher.service                    loaded active     running       Dispatcher daemon for systemd-networkd
+  nginx.service                                  loaded active     running       A high performance web server and a reverse proxy server
+  packagekit.service                             loaded active     running       PackageKit Daemon
+  plymouth-quit-wait.service                     loaded active     exited        Hold until boot process finishes up
+  plymouth-quit.service                          loaded active     exited        Terminate Plymouth Boot Screen
+  plymouth-read-write.service                    loaded active     exited        Tell Plymouth To Write Out Runtime Data
+  polkit.service                                 loaded active     running       Authorization Manager
+  rsyslog.service                                loaded active     running       System Logging Service
+  serial-getty@ttyS0.service                     loaded active     running       Serial Getty on ttyS0
+  setvtrgb.service                               loaded active     exited        Set console scheme
+  snap.amazon-ssm-agent.amazon-ssm-agent.service loaded active     running       Service for snap application amazon-ssm-agent.amazon-ssm-agent
+  snapd.apparmor.service                         loaded active     exited        Load AppArmor profiles managed internally by snapd
+  snapd.seeded.service                           loaded active     exited        Wait until snapd is fully seeded
+  snapd.service                                  loaded active     running       Snap Daemon
+  sysstat.service                                loaded active     exited        Resets System Activity Logs
+  systemd-binfmt.service                         loaded active     exited        Set Up Additional Binary Formats
+  systemd-fsck-root.service                      loaded active     exited        File System Check on Root Device
+  systemd-fsck@dev-disk-by\x2dlabel-BOOT.service loaded active     exited        File System Check on /dev/disk/by-label/BOOT
+  systemd-fsck@dev-disk-by\x2dlabel-UEFI.service loaded active     exited        File System Check on /dev/disk/by-label/UEFI
+  systemd-journal-flush.service                  loaded active     exited        Flush Journal to Persistent Storage
+  systemd-journald.service                       loaded active     running       Journal Service
+  systemd-logind.service                         loaded active     running       User Login Management
+  systemd-modules-load.service                   loaded active     exited        Load Kernel Modules
+  systemd-networkd-persistent-storage.service    loaded active     exited        Enable Persistent Storage in systemd-networkd
+  systemd-networkd-wait-online.service           loaded active     exited        Wait for Network to be Online
+  systemd-networkd.service                       loaded active     running       Network Management
+  systemd-random-seed.service                    loaded active     exited        Load/Save OS Random Seed
+  systemd-remount-fs.service                     loaded active     exited        Remount Root and Kernel File Systems
+  systemd-resolved.service                       loaded active     running       Network Name Resolution
+  systemd-sysctl.service                         loaded active     exited        Apply Kernel Variables
+  systemd-tmpfiles-setup-dev-early.service       loaded active     exited        Create Static Device Nodes in /dev gracefully
+  systemd-tmpfiles-setup-dev.service             loaded active     exited        Create Static Device Nodes in /dev
+ubuntu@ip-172-31-5-116:~$ systemctl list-units --type=service| grep nginx
+  nginx.service                                  loaded active     running       A high performance web server and a reverse proxy server
+ubuntu@ip-172-31-5-116:~$ systemctl disable nginx
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install disable nginx
+==== AUTHENTICATING FOR org.freedesktop.systemd1.reload-daemon ====
+Authentication is required to reload the systemd state.
+Multiple identities can be used for authentication:
+ 1.  Ubuntu (ubuntu)
+ 2.  professor
+Choose identity to authenticate as (1-2): ^C
+ubuntu@ip-172-31-5-116:~$ sudo systemctl disable nginx
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install disable nginx
+Removed '/etc/systemd/system/multi-user.target.wants/nginx.service'.
+ubuntu@ip-172-31-5-116:~$ sudo systemctl is-enabled nginx
+disabled
+ubuntu@ip-172-31-5-116:~$ sudo systemctl stop nginx
+ubuntu@ip-172-31-5-116:~$ journalctl -u nginx -n 50
+Jun 10 16:10:04 ip-172-31-5-116 systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+Jun 10 16:10:04 ip-172-31-5-116 systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+Jun 10 16:11:39 ip-172-31-5-116 systemd[1]: Stopping nginx.service - A high performance web server and a reverse proxy server...
+Jun 10 16:14:31 ip-172-31-5-116 systemd[1]: Stopping nginx.service - A high performance web server and a reverse proxy server...
+Jun 10 16:14:31 ip-172-31-5-116 systemd[1]: nginx.service: Deactivated successfully.
+Jun 10 16:14:31 ip-172-31-5-116 systemd[1]: Stopped nginx.service - A high performance web server and a reverse proxy server.
+ubuntu@ip-172-31-5-116:~$ ps aux sort=-%cpu| head 20
+head: cannot open '20' for reading: No such file or directory
+error: improper AIX field descriptor
+
+Usage:
+ ps [options]
+
+ Try 'ps --help <simple|list|output|threads|misc|all>'
+  or 'ps --help <s|l|o|t|m|a>'
+ for additional help text.
+
+For more details see ps(1).
+ubuntu@ip-172-31-5-116:~$ ps aux --sort=-%cpu| head 20
+head: cannot open '20' for reading: No such file or directory
+ubuntu@ip-172-31-5-116:~$ ps aux --sort=-%cpu| head -20
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.7  1.6  25112 16072 ?        Ss   15:58   0:07 /usr/lib/systemd/systemd --system --deserialize=110
+root       15275  0.2  4.3 446012 42728 ?        Ssl  16:14   0:00 /usr/libexec/fwupd/fwupd
+ubuntu      1082  0.1  0.5  18416  5312 ?        S    16:01   0:01 sshd-session: ubuntu@pts/0
+message+     585  0.0  0.5   9032  5516 ?        Ss   15:58   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root         922  0.0  1.1 1685292 11100 ?       Ssl  15:58   0:00 /snap/amazon-ssm-agent/13009/amazon-ssm-agent
+root         605  0.0  2.6 1811304 25564 ?       Ssl  15:58   0:00 /usr/lib/snapd/snapd
+root        3132  0.0  1.1  37192 11580 ?        Ss   16:11   0:00 /usr/lib/systemd/systemd-udevd
+root          50  0.0  0.0      0     0 ?        S    15:58   0:00 [kswapd0]
+root          31  0.0  0.0      0     0 ?        S    15:58   0:00 [kcompactd0]
+root       13472  0.0  0.0      0     0 ?        I    16:13   0:00 [kworker/0:3-events]
+ubuntu       968  0.0  1.2  21880 12628 ?        Ss   16:01   0:00 /usr/lib/systemd/systemd --user --deserialize=12
+ubuntu      1083  0.0  0.5   9512  5456 pts/0    Ss   16:01   0:00 -bash
+root        3122  0.0  1.1 477552 11540 ?        Ssl  16:11   0:00 /usr/libexec/udisks2/udisksd
+systemd+    3116  0.0  1.3  22472 12804 ?        Ss   16:11   0:00 /usr/lib/systemd/systemd-resolved
+root        3111  0.0  1.4  33852 14452 ?        S<s  16:11   0:00 /usr/lib/systemd/systemd-journald
+root        7640  0.0  0.0      0     0 ?        I    16:12   0:00 [kworker/u60:4-events_power_efficient]
+root       14040  0.0  2.2 343028 21836 ?        Ssl  16:13   0:00 /usr/libexec/packagekitd
+root         607  0.0  0.9  18356  8880 ?        Ss   15:58   0:00 /usr/lib/systemd/systemd-logind
+root       13587  0.0  0.2   2908  2072 ?        Ss   16:13   0:00 /bin/sh /usr/lib/systemd/scripts/chronyd-starter.sh -n -F 1
+ubuntu@ip-172-31-5-116:~$ echo "#!/bin/bash" >  shebang.sh
+-bash: !/bin/bash: event not found
+ubuntu@ip-172-31-5-116:~$ echo '#!/bin/bash' > shebanh.sh
+ubuntu@ip-172-31-5-116:~$ cat shebanh.sh
+#!/bin/bash
+ubuntu@ip-172-31-5-116:~$ echo "Script successfully executed" >> shebanh.sh
+ubuntu@ip-172-31-5-116:~$ chmod u+x shebanh.sh
+ubuntu@ip-172-31-5-116:~$ ./shebanh.sh
+./shebanh.sh: line 2: Script: command not found
+ubuntu@ip-172-31-5-116:~$ vi shebanh.sh
+ubuntu@ip-172-31-5-116:~$ vi shebanh.sh
+ubuntu@ip-172-31-5-116:~$ ./shebanh.sh
+Script successfully executed
+ubuntu@ip-172-31-5-116:~$ echo 'echo "Testing execution"' >> shebanh.sh
+ubuntu@ip-172-31-5-116:~$ ./shebanh.sh
+Script successfully executed
+Testing execution
+ubuntu@ip-172-31-5-116:~$ sudo -u tokyo ./shebanh.sh
+sudo: cannot execute '/home/ubuntu/shebanh.sh': Permission denied (os error 13)
+ubuntu@ip-172-31-5-116:~$ id tokyo
+uid=1001(tokyo) gid=1001(tokyo) groups=1001(tokyo),1000(ubuntu),1002(devs)
+ubuntu@ip-172-31-5-116:~$ sudo chgrp devs shebanh.sh
+ubuntu@ip-172-31-5-116:~$ ls -l shebanh.sh
+-rwxrw-r-- 1 ubuntu devs 73 Jun 10 16:19 shebanh.sh
+ubuntu@ip-172-31-5-116:~$ sudo -u tokyo ./shebanh.sh
+sudo: cannot execute '/home/ubuntu/shebanh.sh': Permission denied (os error 13)
+ubuntu@ip-172-31-5-116:~$ sudo chown g+x shebanh.sh
+chown: invalid user: 'g+x'
+ubuntu@ip-172-31-5-116:~$ sudo chmod g+x shebanh.sh
+ubuntu@ip-172-31-5-116:~$ sudo -u tokyo ./shebanh.sh
+Script successfully executed
+Testing execution
