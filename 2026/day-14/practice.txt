@@ -1,0 +1,341 @@
+ubuntu@ip-172-31-5-116:~$ hostname -I
+172.31.5.116
+ubuntu@ip-172-31-5-116:~$ hostnamectl
+ Static hostname: ip-172-31-5-116
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: ec24e1cee93216b8f51e32071fca10a4
+         Boot ID: 90375605e5314cb283905d5263dbd58a
+  Virtualization: xen
+Operating System: Ubuntu 26.04 LTS
+          Kernel: Linux 7.0.0-1006-aws
+    Architecture: x86-64
+ Hardware Vendor: Xen
+  Hardware Model: HVM domU
+Hardware Version: 4.11.amazon
+Firmware Version: 4.11.amazon
+   Firmware Date: Thu 2006-08-24
+    Firmware Age: 19y 9month 2w 5d
+ubuntu@ip-172-31-5-116:~$ ifconfig
+Command 'ifconfig' not found, but can be installed with:
+sudo apt install net-tools
+ubuntu@ip-172-31-5-116:~$ sudo apt install net-tools
+Installing:
+  net-tools
+
+Summary:
+  Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 3
+  Download size: 152 kB
+  Space needed: 680 kB / 26.6 GB available
+
+Get:1 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 net-tools amd64 2.10-2ubuntu1 [152 kB]
+Fetched 152 kB in 0s (6820 kB/s)
+Selecting previously unselected package net-tools.
+(Reading database ... 124210 files and directories currently installed.)
+Preparing to unpack .../net-tools_2.10-2ubuntu1_amd64v3.deb ...
+Unpacking net-tools (2.10-2ubuntu1) ...
+Setting up net-tools (2.10-2ubuntu1) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-5-116:~$ ifconfig
+enX0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.5.116  netmask 255.255.240.0  broadcast 172.31.15.255
+        inet6 fe80::868:7ff:fe27:5de7  prefixlen 64  scopeid 0x20<link>
+        ether 0a:68:07:27:5d:e7  txqueuelen 1000  (Ethernet)
+        RX packets 35720  bytes 47556598 (47.5 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 4693  bytes 487282 (487.2 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 90  bytes 9360 (9.3 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 90  bytes 9360 (9.3 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ubuntu@ip-172-31-5-116:~$ ip -a
+Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
+       ip [ -force ] -batch filename
+where  OBJECT := { address | addrlabel | fou | help | ila | ioam | l2tp | link |
+                   macsec | maddress | monitor | mptcp | mroute | mrule |
+                   neighbor | neighbour | netconf | netns | nexthop | ntable |
+                   ntbl | route | rule | sr | stats | tap | tcpmetrics |
+                   token | tunnel | tuntap | vrf | xfrm }
+       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
+                    -h[uman-readable] | -iec | -j[son] | -p[retty] |
+                    -f[amily] { inet | inet6 | mpls | bridge | link } |
+                    -4 | -6 | -M | -B | -0 |
+                    -l[oops] { maximum-addr-flush-attempts } | -echo | -br[ief] |
+                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch] [filename] |
+                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] | -a[ll] |
+                    -c[olor]}
+ubuntu@ip-172-31-5-116:~$ hostname
+ip-172-31-5-116
+ubuntu@ip-172-31-5-116:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: enX0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc fq_codel state UP group default qlen 1000
+    link/ether 0a:68:07:27:5d:e7 brd ff:ff:ff:ff:ff:ff
+    altname enx0a6807275de7
+    inet 172.31.5.116/20 metric 100 brd 172.31.15.255 scope global dynamic enX0
+       valid_lft 3194sec preferred_lft 3194sec
+    inet6 fe80::868:7ff:fe27:5de7/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+ubuntu@ip-172-31-5-116:~$ ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: enX0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc fq_codel state UP group default qlen 1000
+    link/ether 0a:68:07:27:5d:e7 brd ff:ff:ff:ff:ff:ff
+    altname enx0a6807275de7
+    inet 172.31.5.116/20 metric 100 brd 172.31.15.255 scope global dynamic enX0
+       valid_lft 3177sec preferred_lft 3177sec
+    inet6 fe80::868:7ff:fe27:5de7/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+ubuntu@ip-172-31-5-116:~$ ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: enX0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc fq_codel state UP group default qlen 1000
+    link/ether 0a:68:07:27:5d:e7 brd ff:ff:ff:ff:ff:ff
+    altname enx0a6807275de7
+    inet 172.31.5.116/20 metric 100 brd 172.31.15.255 scope global dynamic enX0
+       valid_lft 3116sec preferred_lft 3116sec
+    inet6 fe80::868:7ff:fe27:5de7/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+ubuntu@ip-172-31-5-116:~$ ping -c google.com
+ping: invalid argument: 'google.com'
+ubuntu@ip-172-31-5-116:~$ ping -c 4 google.com
+PING google.com (74.125.199.101) 56(84) bytes of data.
+64 bytes from ph-in-f101.1e100.net (74.125.199.101): icmp_seq=1 ttl=105 time=10.7 ms
+64 bytes from ph-in-f101.1e100.net (74.125.199.101): icmp_seq=2 ttl=107 time=10.8 ms
+64 bytes from ph-in-f101.1e100.net (74.125.199.101): icmp_seq=3 ttl=107 time=10.7 ms
+64 bytes from ph-in-f101.1e100.net (74.125.199.101): icmp_seq=4 ttl=105 time=10.7 ms
+
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 10.652/10.715/10.840/0.073 ms
+ubuntu@ip-172-31-5-116:~$ sudo apt install traceroute -y
+Installing:
+  traceroute
+
+Summary:
+  Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 3
+  Download size: 54.7 kB
+  Space needed: 162 kB / 26.6 GB available
+
+Get:1 http://us-west-2.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 traceroute amd64 1:2.1.6-1build1 [54.7 kB]
+Fetched 54.7 kB in 0s (158 kB/s)
+Selecting previously unselected package traceroute.
+(Reading database ... 124238 files and directories currently installed.)
+Preparing to unpack .../traceroute_1%3a2.1.6-1build1_amd64v3.deb ...
+Unpacking traceroute (1:2.1.6-1build1) ...
+Setting up traceroute (1:2.1.6-1build1) ...
+update-alternatives: using /usr/bin/traceroute.db to provide /usr/bin/traceroute (traceroute) in auto mode
+update-alternatives: using /usr/bin/traceroute6.db to provide /usr/bin/traceroute6 (traceroute6) in auto mode
+update-alternatives: using /usr/bin/lft.db to provide /usr/bin/lft (lft) in auto mode
+update-alternatives: using /usr/bin/traceproto.db to provide /usr/bin/traceproto (traceproto) in auto mode
+update-alternatives: using /usr/sbin/tcptraceroute.db to provide /usr/sbin/tcptraceroute (tcptraceroute) in auto mode
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-5-116:~$ traceroute google.com
+traceroute to google.com (74.125.199.113), 30 hops max, 60 byte packets
+ 1  242.4.194.67 (242.4.194.67)  6.459 ms 242.16.83.107 (242.16.83.107)  6.342 ms 242.16.82.239 (242.16.82.239)  7.500 ms
+ 2  * * *
+ 3  * 99.83.117.223 (99.83.117.223)  6.889 ms *
+ 4  * * *
+ 5  142.251.50.242 (142.251.50.242)  8.175 ms 142.251.55.202 (142.251.55.202)  5.969 ms 142.251.241.136 (142.251.241.136)  5.847 ms
+ 6  192.178.105.64 (192.178.105.64)  7.322 ms 108.170.235.196 (108.170.235.196)  6.995 ms 192.178.105.64 (192.178.105.64)  7.059 ms
+ 7  142.251.55.131 (142.251.55.131)  11.492 ms  12.534 ms 142.250.231.127 (142.250.231.127)  11.886 ms
+ 8  209.85.246.193 (209.85.246.193)  12.027 ms 142.251.252.191 (142.251.252.191)  11.068 ms 142.251.252.183 (142.251.252.183)  14.014 ms
+ 9  209.85.240.145 (209.85.240.145)  13.016 ms 209.85.142.107 (209.85.142.107)  11.590 ms 209.85.143.229 (209.85.143.229)  13.918 ms
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  * * *
+17  * * *
+18  * * *
+19  ph-in-f113.1e100.net (74.125.199.113)  12.118 ms * *
+ubuntu@ip-172-31-5-116:~$ tracepath google.com
+ 1?: [LOCALHOST]                      pmtu 9001
+ 1:  ip-172-31-0-1.us-west-2.compute.internal              0.215ms pmtu 1500
+ 1:  242.4.194.197                                         7.056ms asymm  6
+ 2:  no reply
+ 3:  99.83.116.81                                          6.075ms asymm 10
+ 4:  no reply
+ 5:  no reply
+ 6:  no reply
+ 7:  no reply
+ 8:  no reply
+ 9:  no reply
+10:  no reply
+11:  no reply
+12:  no reply
+13:  no reply
+14:  no reply
+15:  no reply
+^C
+ubuntu@ip-172-31-5-116:~$ ^C
+ubuntu@ip-172-31-5-116:~$ ^C
+ubuntu@ip-172-31-5-116:~$ ss -tulnp
+Netid                State                 Recv-Q                Send-Q                                   Local Address:Port                               Peer Address:Port               Process
+udp                  UNCONN                0                     0                                           127.0.0.54:53                                      0.0.0.0:*
+udp                  UNCONN                0                     0                                        127.0.0.53%lo:53                                      0.0.0.0:*
+udp                  UNCONN                0                     0                                    172.31.5.116%enX0:68                                      0.0.0.0:*
+udp                  UNCONN                0                     0                                            127.0.0.1:323                                     0.0.0.0:*
+udp                  UNCONN                0                     0                                                [::1]:323                                        [::]:*
+tcp                  LISTEN                0                     4096                                        127.0.0.54:53                                      0.0.0.0:*
+tcp                  LISTEN                0                     4096                                     127.0.0.53%lo:53                                      0.0.0.0:*
+tcp                  LISTEN                0                     4096                                           0.0.0.0:22                                      0.0.0.0:*
+tcp                  LISTEN                0                     4096                                              [::]:22                                         [::]:*
+ubuntu@ip-172-31-5-116:~$ ss -tulnp| grep 80
+ubuntu@ip-172-31-5-116:~$ sudo apt install dnsutils -y
+Note, selecting 'bind9-dnsutils' instead of 'dnsutils'
+bind9-dnsutils is already the newest version (1:9.20.18-1ubuntu2.1).
+bind9-dnsutils set to manually installed.
+Summary:
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 3
+ubuntu@ip-172-31-5-116:~$ dig google.com
+
+; <<>> DiG 9.20.18-1ubuntu2.1-Ubuntu <<>> google.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19638
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;google.com.                    IN      A
+
+;; ANSWER SECTION:
+google.com.             136     IN      A       142.250.69.174
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Fri Jun 12 17:04:51 UTC 2026
+;; MSG SIZE  rcvd: 55
+
+ubuntu@ip-172-31-5-116:~$ nslookup google.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   google.com
+Address: 142.250.69.174
+Name:   google.com
+Address: 2607:f8b0:400e:c05::65
+Name:   google.com
+Address: 2607:f8b0:400e:c05::8a
+Name:   google.com
+Address: 2607:f8b0:400e:c05::8b
+Name:   google.com
+Address: 2607:f8b0:400e:c05::64
+
+ubuntu@ip-172-31-5-116:~$ curl -I https://google.com
+HTTP/2 301
+location: https://www.google.com/
+content-type: text/html; charset=UTF-8
+content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-1tuT39RVWlfuKMylYWKHuA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+date: Fri, 12 Jun 2026 17:05:35 GMT
+expires: Sun, 12 Jul 2026 17:05:35 GMT
+cache-control: public, max-age=2592000
+server: gws
+content-length: 220
+x-xss-protection: 0
+x-frame-options: SAMEORIGIN
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+ubuntu@ip-172-31-5-116:~$ curl -I https://localhost
+curl: (7) Failed to connect to localhost port 443 after 0 ms: Could not connect to server
+ubuntu@ip-172-31-5-116:~$ curl -I http://localhost
+curl: (7) Failed to connect to localhost port 80 after 0 ms: Could not connect to server
+ubuntu@ip-172-31-5-116:~$ systemctl status nginx
+Warning: The unit file, source configuration file or drop-ins of nginx.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+○ nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; preset: enabled)
+     Active: inactive (dead)
+       Docs: man:nginx(8)
+ubuntu@ip-172-31-5-116:~$ systemctl is-enabled nginx
+disabled
+ubuntu@ip-172-31-5-116:~$ systemctl enable nginx
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+==== AUTHENTICATING FOR org.freedesktop.systemd1.reload-daemon ====
+Authentication is required to reload the systemd state.
+Multiple identities can be used for authentication:
+ 1.  Ubuntu (ubuntu)
+ 2.  professor
+Choose identity to authenticate as (1-2): ^C
+ubuntu@ip-172-31-5-116:~$ sudo systemctl enable nginx
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+Created symlink '/etc/systemd/system/multi-user.target.wants/nginx.service' → '/usr/lib/systemd/system/nginx.service'.
+ubuntu@ip-172-31-5-116:~$ sudo systemctl start nginx
+ubuntu@ip-172-31-5-116:~$ curl -I http://localhost
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Date: Fri, 12 Jun 2026 17:07:06 GMT
+Content-Type: text/html
+Content-Length: 615
+Last-Modified: Wed, 10 Jun 2026 16:10:03 GMT
+Connection: keep-alive
+ETag: "6a298c5b-267"
+Accept-Ranges: bytes
+
+ubuntu@ip-172-31-5-116:~$ netstat -an | head
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+tcp        0    644 172.31.5.116:22         103.197.75.166:10514    ESTABLISHED
+tcp6       0      0 :::80                   :::*                    LISTEN
+tcp6       0      0 :::22                   :::*                    LISTEN
+tcp6       0      0 ::1:53716               ::1:80                  TIME_WAIT
+ubuntu@ip-172-31-5-116:~$ nc -zv localhost 22
+Connection to localhost (127.0.0.1) 22 port [tcp/ssh] succeeded!
+ubuntu@ip-172-31-5-116:~$ nc -zv nginx 80
+nc: getaddrinfo for host "nginx" port 80: Temporary failure in name resolution
+ubuntu@ip-172-31-5-116:~$ nc -zv localhost 80
+Connection to localhost (127.0.0.1) 80 port [tcp/http] succeeded!
+ubuntu@ip-172-31-5-116:~$
