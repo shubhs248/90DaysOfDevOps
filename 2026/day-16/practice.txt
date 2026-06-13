@@ -1,0 +1,159 @@
+# Day 16 - Shell Scripting Quick Revision
+
+## Shebang
+
+```bash
+#!/bin/bash
+```
+
+Tells Linux which interpreter should execute the script.
+
+---
+
+## Variables
+
+```bash
+NAME="Shubham"
+ROLE="DevOps Engineer"
+
+echo "$NAME"
+```
+
+Remember:
+
+* No spaces around =
+* Use double quotes for variable expansion
+
+Wrong:
+
+```bash
+NAME = "Shubham"
+```
+
+Correct:
+
+```bash
+NAME="Shubham"
+```
+
+---
+
+## User Input
+
+```bash
+read NAME
+```
+
+Stores user input in a variable.
+
+Wrong:
+
+```bash
+read $NAME
+```
+
+Correct:
+
+```bash
+read NAME
+```
+
+---
+
+## If Else
+
+```bash
+if [ "$AGE" -ge 18 ]
+then
+    echo "Adult"
+else
+    echo "Minor"
+fi
+```
+
+Remember:
+
+* Spaces inside [ ]
+* Every if ends with fi
+
+---
+
+## File Check
+
+```bash
+if [ -f "$FILE" ]
+then
+    echo "Exists"
+fi
+```
+
+-f = file exists
+
+---
+
+## Service Check
+
+```bash
+systemctl is-active nginx
+systemctl is-enabled nginx
+systemctl status nginx
+```
+
+Difference:
+
+* status = detailed output
+* is-active = running or not
+* is-enabled = starts on boot or not
+
+---
+
+## Disk Usage Example
+
+```bash
+USAGE=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')
+```
+
+Meaning:
+
+* NR==2 → second line only
+* gsub() → remove %
+* print $5 → use% column
+
+---
+
+## Common Mistakes I Made
+
+1. Missing spaces in if condition
+
+Wrong:
+
+```bash
+if ["$NUM" -gt 0]
+```
+
+Correct:
+
+```bash
+if [ "$NUM" -gt 0 ]
+```
+
+2. Using read $VAR instead of read VAR
+
+3. Using single quotes when variable expansion was expected
+
+4. Forgetting nested if blocks
+
+5. Wrong condition ordering (80 before 90)
+
+---
+
+## Interview Takeaway
+
+Shell scripting combines:
+
+* Variables
+* User Input
+* Conditions
+* Linux Commands
+
+This is the foundation for automation and DevOps scripting.
