@@ -1,0 +1,12 @@
+Log Analysis Report: 
+Date: Wed Jun 17 18:19:58 UTC 2026
+=====================================
+Log File: sample.log
+Total Lines: 11
+Total errors: 4
+=====================================
+Top errors:       3    Database Failed
+      1    SSH Login
+      1    Connection Timeout
+Critical Errors: 4:2026-06-17 10:03:30 CRITICAL Disk Full
+10:2026-06-17 10:09:55 CRITICAL Database Connection Lost
