@@ -25,6 +25,10 @@
 | Grep | `grep pattern file` | `grep -i "error" log.txt` |
 | Awk | `awk '{print $1}' file` | `awk -F: '{print $1}' /etc/passwd` |
 | Sed | `sed 's/old/new/g' file` | `sed -i 's/foo/bar/g' config.txt` |
+| Command substitution | `$(command)` | `NOW=$(date +%F)` |
+| Redirection | `>`, `>>`, `2>`, `2>&1` | `cmd > out.log 2>&1` |
+| Find | `find path -name "*.x"` | `find . -name "*.log" -mtime +7` |
+| Cron | `* * * * * cmd` | `0 3 * * * backup.sh` |
 | Strict mode | `set -euo pipefail` | Top of every serious script |
 
 ---
@@ -502,6 +506,86 @@ trap cleanup EXIT        # run cleanup whenever the script exits, success or fai
 
 ---
 
+## Command Substitution — `$(command)`
+
+Runs a command and drops its **output** straight into a variable or another command. I use this everywhere — it's the glue of shell scripting.
+
+```bash
+NOW=$(date +%Y-%m-%d)            # store today's date in a variable
+echo "Report generated on $NOW"
+
+USAGE=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')   # from my Day 16 disk check
+COUNT=$(grep -Eci "ERROR|FAILED" app.log)                    # from my Day 20 analyzer
+FILES=$(find . -name "*.log" | wc -l)                        # from my Day 19 log rotation
+```
+> Old syntax uses backticks `` `command` `` — prefer `$( )`, it's cleaner and nests easily: `$(dirname $(pwd))`.
+
+---
+
+## Input / Output Redirection (stdout & stderr)
+
+Every command has two output streams: **stdout** (normal output, channel `1`) and **stderr** (errors, channel `2`). Redirection sends them where you want.
+
+```bash
+echo "hello" > out.txt      # >   overwrite a file with stdout
+echo "more" >> out.txt      # >>  append to a file (don't erase)
+command 2> errors.txt       # 2>  send only errors (stderr) to a file
+command > out.txt 2>&1      # 2>&1 send stderr to wherever stdout goes (both into out.txt)
+command > /dev/null 2>&1    # silence everything (discard all output)
+```
+**Real one I used (Day 17):** `dpkg -s "$package" > /dev/null 2>&1` — check if a package exists without printing anything.
+**Real one I used (Day 19):** `./maintenance.sh >> /tmp/maintenance.log 2>&1` — log both output and errors of a cron job.
+
+> Memory hook: `2>&1` means "channel 2 goes to the same place as channel 1". Order matters — put it *after* the `>`.
+
+---
+
+## `find` — the command I leaned on most (Days 19–20)
+
+Searches a directory tree and can act on what it finds. This powered my log rotation and backup scripts.
+
+```bash
+find . -name "*.log"             # find all .log files under current dir
+find . -type f                   # only files (-type d for directories)
+find . -mtime +7                 # modified more than 7 days ago (-mtime -1 = within last day)
+find . -size +100M               # larger than 100 MB
+find . -name "*.tmp" -delete     # find AND delete matches
+find . -name "*.log" -exec gzip {} \;   # run a command on each match ({} = the file)
+```
+**Real pipeline (Day 19 `log_rotate.sh`):**
+```bash
+find "$DIR" -name "*.log" -mtime +7 -exec gzip {} \;   # compress logs older than 7 days
+find "$DIR" -name "*.gz"  -mtime +30 -delete           # delete archives older than 30 days
+```
+> `-exec ... {} \;` runs the command once per file; `-exec ... {} +` batches them (faster). Always quote paths.
+
+---
+
+## Cron — scheduling scripts
+
+Cron runs scripts automatically on a schedule. Five time fields, then the command.
+
+```text
+* * * * *  command
+│ │ │ │ │
+│ │ │ │ └─ Day of week (0-6, Sun=0)
+│ │ │ └─── Month (1-12)
+│ │ └───── Date / day of month (1-31)
+│ └─────── Hour (0-23)
+└───────── Minute (0-59)
+```
+```bash
+crontab -e                       # edit your cron jobs
+crontab -l                       # list current jobs
+
+0 3 * * *   /path/backup.sh              # every day at 3:00 AM
+*/5 * * * * /path/health_check.sh        # every 5 minutes
+0 2 * * 0   /path/log_rotate.sh /var/log # 2:00 AM every Sunday
+```
+> `*` means "every". `*/5` means "every 5th". From my Day 19 project — this is how servers automate maintenance.
+
+---
+
 ## My Reusable Script Template
 
 This is the skeleton I now start every script from — it combines everything above (strict mode, argument check, functions, a `main`, and cleanup).
@@ -556,6 +640,23 @@ main
 - **Using `>` for numbers** → use `-gt`; `>` means redirect a file.
 - **Unquoted variables** → always `"$VAR"`, especially paths that may contain spaces.
 - **Forgetting `uniq` needs sorted input** → `sort | uniq -c`, never `uniq` alone.
+
+---
+
+## Things I Built (Days 16–20)
+
+Proof that these concepts turned into real, working scripts:
+
+- ✔ **Service Checker** — checks if a service is active (`systemctl is-active`) — *Day 16/17*
+- ✔ **User / Number Checker** — input validation with `if/elif/else` — *Day 16*
+- ✔ **Largest Number Finder** — loops + comparisons — *Day 16*
+- ✔ **Disk Usage Monitor** — command substitution + `awk` + thresholds — *Day 16*
+- ✔ **Log Rotation Script** — `find` + `gzip`, compress old, delete ancient — *Day 19*
+- ✔ **Backup Script** — timestamped `tar.gz` + cleanup of old backups — *Day 19*
+- ✔ **Maintenance Script** — chains rotation + backup, logs with `2>&1` — *Day 19*
+- ✔ **Log Analyzer** — `grep`/`awk`/`sort`/`uniq` pipeline + report + archive — *Day 20*
+
+Each one combined the basics above (variables, loops, functions, text processing, `find`, redirection, strict mode) into something an actual server could run on a cron schedule.
 
 ---
 
