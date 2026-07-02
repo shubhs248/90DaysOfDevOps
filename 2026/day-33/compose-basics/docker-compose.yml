@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: root123
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress
+    ports:
+      - "8086:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: admin123
+      WORDPRESS_DB_NAME: wordpress
+
+volumes:
+  mysql-data:
