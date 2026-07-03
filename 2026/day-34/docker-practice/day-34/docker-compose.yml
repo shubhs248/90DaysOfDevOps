@@ -1,0 +1,66 @@
+services:
+
+  web:
+    build: ./app 
+
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      db:
+        condition: service_healthy 
+
+      redis:
+        condition: service_started
+
+    networks:
+      - backend
+
+    labels:
+      owner: shubham
+      component: web
+
+  db:
+    image: postgres:17
+
+    restart: on-failure
+
+    environment:
+      POSTGRES_PASSWORD: admin123
+
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks: 
+      - backend
+
+    labels:
+      owner: shubham
+      component: db
+
+  redis:
+    image: redis:7-alpine
+
+    restart: always
+
+    networks: 
+      - backend
+
+    labels:
+      owner: shubham
+      component: redis
+
+volumes:
+  pg-data:
+
+networks:
+  backend:
