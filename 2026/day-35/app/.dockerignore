@@ -1,0 +1,8 @@
+.git
+node_modules
+*.log
+.env
+.vscode
+README.md
+Dockerfile.single
+Dockerfile.multistage
