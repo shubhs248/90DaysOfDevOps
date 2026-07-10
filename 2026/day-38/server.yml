@@ -1,0 +1,18 @@
+server:
+  name: practice
+  ip: 0.0.0.9
+  port: 5000
+database:
+  host: 0.0.0.10
+  name: practice_db
+  credentials:
+    user: db_user
+    password: db_password
+command: |
+  apt update
+  apt install -y nginx
+  service nginx start
+comment: >
+  This server configuration
+  is for practice purpose only. It
+  includes basic setup for a web server
